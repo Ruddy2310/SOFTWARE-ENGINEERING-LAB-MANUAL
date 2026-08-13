@@ -1,0 +1,62 @@
+{
+  "info": {
+    "name": "Practical 3 - Calculator API Tests",
+    "description": "Import this into Postman. Start src/api_server.py first, then run this collection with the Postman Runner.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Health Check",
+      "request": {
+        "method": "GET",
+        "url": { "raw": "http://127.0.0.1:8899/health", "host": ["127.0.0.1"], "port": "8899", "path": ["health"] }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status code is 200', function () { pm.response.to.have.status(200); });",
+              "pm.test('Body status is ok', function () { pm.expect(pm.response.json().status).to.eql('ok'); });"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Add Endpoint",
+      "request": {
+        "method": "GET",
+        "url": { "raw": "http://127.0.0.1:8899/add?a=5&b=7", "host": ["127.0.0.1"], "port": "8899", "path": ["add"], "query": [{ "key": "a", "value": "5" }, { "key": "b", "value": "7" }] }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status code is 200', function () { pm.response.to.have.status(200); });",
+              "pm.test('Result is 12', function () { pm.expect(pm.response.json().result).to.eql(12); });"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Unknown Route",
+      "request": {
+        "method": "GET",
+        "url": { "raw": "http://127.0.0.1:8899/does-not-exist", "host": ["127.0.0.1"], "port": "8899", "path": ["does-not-exist"] }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status code is 404', function () { pm.response.to.have.status(404); });"
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,35 @@
+name: Practical 3 - Live Testing Tools CI
+
+on:
+  push:
+    paths:
+      - 'Practical-3-Testing-Tools/**'
+  pull_request:
+    paths:
+      - 'Practical-3-Testing-Tools/**'
+  workflow_dispatch:
+
+jobs:
+  run-tests:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: Practical-3-Testing-Tools
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Run Unit Testing Tool demo (unittest)
+        run: python -m unittest tests.test_calculator -v
+
+      - name: Run API Testing Tool demo (unittest against local server)
+        run: python -m unittest tests.test_api -v
+
+      - name: Run full suite together
+        run: python -m unittest discover -s tests -v
